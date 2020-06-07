@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: beta
+spec:
+  replicas: 6
+  selector:
+    matchLabels:
+      app: app-http
+      version: beta
+  template:
+    metadata:
+      labels:
+        app: app-http
+        version: beta
+    spec:
+      containers:
+      - name: flask-api
+        imagePullPolicy: Always
+        image: alavarello/test-api:beta
+        ports:
+        - containerPort: 8888
