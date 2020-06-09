@@ -49,7 +49,7 @@ class Admin(Resource):
       parser.add_argument("secrete")
       args = parser.parse_args()
 
-      if args['secrete'] != '123456':
+      if args['secret'] != '123456':
         return 'Bad request', 401
 
       if args['migrate']:

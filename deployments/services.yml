@@ -3,10 +3,10 @@ kind: Service
 metadata:
   name: http-service
 spec:
-  type: NodePort
+  type: ClusterIP
   ports:
     - port: 8888
-      nodePort: 32333
+      name: http
   selector:
     app: app-http
 ---
