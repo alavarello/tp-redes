@@ -46,7 +46,7 @@ class Admin(Resource):
 
     def post(self):
       parser.add_argument("migrate")
-      parser.add_argument("secrete")
+      parser.add_argument("secret")
       args = parser.parse_args()
 
       if args['secret'] != '123456':
