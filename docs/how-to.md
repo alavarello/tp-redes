@@ -30,11 +30,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.1/a
 kubectl create -f dashboard/config.yml
 # Generar token y copiarlo para poder hacer login
 kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
-<<<<<<< HEAD
 # En otra terminal o correrlo como un subprocesos
-=======
-# Ejecutar en otra terminal o correrlo como un subproceso
->>>>>>> becfb2c4d667ddfa26fb25147f539d76744dbf1a
 kubectl proxy
 ```
 
@@ -86,11 +82,7 @@ GET <host>/<api-version>/students/
 POST <host>/students/ # Data: username=agus y email=agus@redes.com
 ```
 
-<<<<<<< HEAD
  ##### 6.1) Creamos un host en la red para acceder a las API
-=======
- ##### 4) Creamos un host en la red para acceder a la API
->>>>>>> becfb2c4d667ddfa26fb25147f539d76744dbf1a
 
 Creamos una contenedor de docker dentro de la red **kind** para poder acceder mediante curl a la API. Este contenedor es efimero, cuando se cierre el programa bash se destruye el contenedor. El contenedor esta basado en una imagen que tiene ubuntu y curl
 
@@ -111,17 +103,12 @@ curl nginx/<api-version>/students/
 curl --data "username=agus&email=agus@redes.com" nginx/<api-version>/students/
 ```
 
-<<<<<<< HEAD
  ##### 6.2) Usar loalhost
 
  En este caso se puede usar una aplicacion como postman para hacer los post o mismo curl. Lo que cambia es que el **host** es **localhost**
 
  ##### 7) Subir la version beta de la API
 Para la version beta de la API usamos la imagen de docker `alavarello/test-api:beta` que tiene unos cambios en como representar un estudiante.
-=======
- ##### 5) Subir la version beta de la API
-Para la version beta de la API usamos la imagen de docker `alavarello/test-api:beta` que tiene unos cambios sobre como representar un estudiante.
->>>>>>> becfb2c4d667ddfa26fb25147f539d76744dbf1a
 
 ```sh
 # Subimos algunos Pods de la version beta y bajamos la cantidad de Pods de la version alpha
@@ -136,13 +123,7 @@ kubectl apply -f deployments/beta.yml
 kubectl delete deployments alpha
 ```
 
-<<<<<<< HEAD
  #### 6) Otras pruebas
-=======
-**Nota:** Despues de correr el primer comando se pueden apreciar las dos API conviviendo en el cluster
-
- #### 6) Pruebas extras
->>>>>>> becfb2c4d667ddfa26fb25147f539d76744dbf1a
 
  Algunos comandos extra que se corrieron en las pruebas
 

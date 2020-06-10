@@ -56,3 +56,19 @@ spec:
         image: alavarello/test-api:alpha
         ports:
         - containerPort: 8888
+        env:
+          - name: DATABASE_USER
+            valueFrom:
+              secretKeyRef:
+                name: database
+                key: user
+          - name: DATABASE_PASS
+            valueFrom:
+              secretKeyRef:
+                name: database
+                key: pass
+          - name: DATABASE_NAME
+            valueFrom:
+              secretKeyRef:
+                name: database
+                key: name

@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from models import db, User
@@ -5,18 +6,21 @@ from models import db, User
 app = Flask(__name__)
 api = Api(app)
 
+database_username = os.environ.get("DATABASE_USER", default="")
+database_pass = os.environ.get("DATABASE_PASS", default="")
+database_name = os.environ.get("DATABASE_NAME", default="")
 
-POSTGRES = {
-    'user': 'postgres',
-    'pw': '123456',
-    'db': 'postgres',
+DATABASE = {
+    'user': database_username,
+    'pw': database_pass,
+    'db': database_name,
     'host': 'database-service',
     'port': '5432',
 }
 
 app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
-%(pw)s@%(host)s:%(port)s/%(db)s' % POSTGRES
+%(pw)s@%(host)s:%(port)s/%(db)s' % DATABASE
 db.init_app(app)
 
 parser = reqparse.RequestParser()
@@ -24,7 +28,6 @@ parser = reqparse.RequestParser()
 
 class StudentsList(Resource):
     def get(self):
-        print(User.query.all())
         return str(User.query.all())
 
 
@@ -46,7 +49,7 @@ class Admin(Resource):
 
     def post(self):
       parser.add_argument("migrate")
-      parser.add_argument("secrete")
+      parser.add_argument("secret")
       args = parser.parse_args()
 
       if args['secret'] != '123456':
