@@ -30,11 +30,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.1/a
 kubectl create -f dashboard/config.yml
 # Generar token y copiarlo para poder hacer login
 kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
-<<<<<<< HEAD
-# En otra terminal o correrlo como un subprocesos
-=======
 # Ejecutar en otra terminal o correrlo como un subproceso
->>>>>>> becfb2c4d667ddfa26fb25147f539d76744dbf1a
 kubectl proxy
 ```
 
