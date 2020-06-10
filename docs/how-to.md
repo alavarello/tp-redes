@@ -68,10 +68,10 @@ La version alpha de la API se puede encontrar como una imagen de docker `alavare
 ```sh
 # Primero se crean los secretos
 kubectl apply -f deployments/secrets.yml
-# Luego se crean los servicios
-kubectl apply -f deployments/services.yml
+# Luego se crea el servicio de la base de datos
+kubectl apply -f deployments/database.yml
 # Deployamos nginx
-kubectl apply -f deployments/nginx-alpha.yml
+kubectl apply -f deployments/nginx.yml
 # Despues se deploya la version alpha de la API
 kubectl apply -f deployments/alpha.yml
 ```
@@ -95,7 +95,7 @@ Si la base de datos es nueva, entonces la migramos usando el endpoint de **/admi
  ###### 6.2.1) Usar localhost
 
  En este caso se puede usar una aplicacion como postman para hacer los post o mismo curl. El host en este caso es **localhost**
- 
+
   ```sh
 curl --data "secret=123456&migrate=true" localhost/v1/admin/
 # GET para obtener todos los estudiantes
@@ -126,20 +126,24 @@ Para la version beta de la API usamos la imagen de docker `alavarello/test-api:b
 ```sh
 # Subimos algunos Pods de la version beta y bajamos la cantidad de Pods de la version alpha
 kubectl apply -f deployments/beta-canary.yml
-# Borramos el deployment de nginx anterior **(temporal hay que ver como cambiarlo)**
-kubectl delete deployments nginx
-# Cambiamos la configuracion del nginx
-kubectl apply -f deployments/nginx-beta.yml
+# Cambiamos el config map de nginx
+kubectl apply -f deployments/nginx-canary-map.yml
+# Hacemos un rollout de nginx
+kubectl rollout restart deployment nginx
 ```
+
 En este caso se tiene las dos APIs conviviendo al mismo tiempo
 
  ##### 8) Sacar la version alpha
- 
+
 ```sh
 # Subimos la cantidad total de nodos que queremos de la version beta
 kubectl apply -f deployments/beta.yml
+# Cambiamos nginx config
+kubectl apply -f deployments/nginx-beta-map.yml
+kubectl rollout restart deployment nginx
 # Borramos el deployment de alpha
-kubectl delete deployments alpha
+kubectl delete -f deployments/alpha.yml
 ```
 
  ##### 9) Otras pruebas
