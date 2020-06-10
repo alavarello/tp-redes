@@ -59,6 +59,8 @@ docker run --network=kind --name nginx -d -p 80:80 custom-nginx
 La version alpha de la API se puede encontrar como una imagen de docker `alavarello/test-api:alpha`
 
 ```sh
+# Primero se crean los secretos
+kubectl apply -f deployments/secrets.yml
 # Primero se deployan los servicios
 kubectl apply -f deployments/services.yml
 # Deployamos nginx
