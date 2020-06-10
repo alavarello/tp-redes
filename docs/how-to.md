@@ -38,7 +38,7 @@ Al correr el ultimo comando entrar [aqui](http://localhost:8001/api/v1/namespace
 
  ##### 3) Levantar una base de datos local
 
-Levantamos una base de datos postgresql en un docker. Este contenedor llamado **database** esta en la misma red (**kind**) que los nodos del cluster. De esta manera el cluster se puede comunicar con el servidor de la base de datos. La base de datos de portgres que se crea se llama **postgres** con un usuario **postgres** y contraseña **123456**
+Levantamos una base de datos postgresql en un docker. Este contenedor llamado **database** esta en la misma red (**kind**) que los nodos del cluster. De esta manera el cluster se puede comunicar con el servidor de la base de datos. La base de datos de postgresql que se crea se llama **postgres** con un usuario **postgres** y contraseña **123456**
 
 ```sh
 docker container run --network=kind --name database -e POSTGRES_PASSWORD=123456 -d postgres
