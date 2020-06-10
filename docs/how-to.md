@@ -30,7 +30,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.1/a
 kubectl create -f dashboard/config.yml
 # Generar token y copiarlo para poder hacer login
 kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
-# En otra terminal o correrlo como un subprocesos
+# Ejecutar en otra terminal o correrlo como un subproceso
 kubectl proxy
 ```
 
@@ -38,7 +38,7 @@ Al correr el ultimo comando entrar [aqui](http://localhost:8001/api/v1/namespace
 
  ##### 3) Levantar una base de datos local
 
-Levantamos una base de datos postgresql en un docker. Este contenedor llamado **database** esta en la misma red (**kind**) que los nodos del cluster. De esta manera el cluster se puede comunicar con el servidor de la base de datos. La base de datos de portgres que se crea se llama **postgres** con un usuario **postgres** y contraseña **123456**
+Levantamos una base de datos postgresql en un docker. Este contenedor llamado **database** esta en la misma red (**kind**) que los nodos del cluster. De esta manera el cluster se puede comunicar con el servidor de la base de datos. La base de datos de postgresql que se crea se llama **postgres** con un usuario **postgres** y contraseña **123456**
 
 ```sh
 docker container run --network=kind --name database -e POSTGRES_PASSWORD=123456 -d postgres
@@ -50,7 +50,7 @@ Levantamos un contenedor que tenga una imagen nginx
 Este  escucha en el puerto 80 y lo rediriga a los nodos.
 
 ```sh
-docker build -t tp-redes-nginx images/nginx/
+docker build -t custom-nginx images/nginx/
 docker run --network=kind --name nginx -d -p 80:80 custom-nginx
 ```
 
