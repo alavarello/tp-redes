@@ -50,7 +50,7 @@ Levantamos un contenedor que tenga una imagen nginx
 Este  escucha en el puerto 80 y lo rediriga a los nodos.
 
 ```sh
-docker build -t tp-redes-nginx images/nginx/
+docker build -t custom-nginx images/nginx/
 docker run --network=kind --name nginx -d -p 80:80 custom-nginx
 ```
 
