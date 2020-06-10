@@ -22,6 +22,8 @@ app.config['DEBUG'] = True
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://%(user)s:\
 %(pw)s@%(host)s:%(port)s/%(db)s' % DATABASE
 db.init_app(app)
+with app.app_context():
+    db.create_all()
 
 parser = reqparse.RequestParser()
 
@@ -45,26 +47,7 @@ class StudentsList(Resource):
       return str(new_user), 201
 
 
-class Admin(Resource):
-
-    def post(self):
-      parser.add_argument("migrate")
-      parser.add_argument("secret")
-      args = parser.parse_args()
-
-      if args['secret'] != '123456':
-        return 'Bad request', 401
-
-      if args['migrate']:
-        db.create_all()
-        return 'Migrated', 200
-
-      return 'Nothing to do here', 200
-
-
 api.add_resource(StudentsList, '/students/')
-api.add_resource(Admin, '/admin/')
-
 
 if __name__ == "__main__":
   app.run(debug=True, host='0.0.0.0',  port=8888)

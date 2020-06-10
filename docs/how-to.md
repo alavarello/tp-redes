@@ -82,14 +82,11 @@ kubectl apply -f deployments/alpha.yml
  ##### 6.1) Endpoints
 
  ```sh
-POST <host>/<api-version>/admin/ # Data: secret=123456 y migrate=true
 GET <host>/<api-version>/students/
 POST <host>/students/ # Data: username=agus y email=agus@redes.com
 ```
 
 En esta instancia **api-version** es **v1**. Cuando se exponga la version beta **api-version** es **v2**
-
-Si la base de datos es nueva, entonces la migramos usando el endpoint de **/admin**. Este comando se deberia correr una vez en la prueba.
 
  ##### 6.2) Formas de acceder a la API
  ###### 6.2.1) Usar localhost
@@ -97,7 +94,6 @@ Si la base de datos es nueva, entonces la migramos usando el endpoint de **/admi
  En este caso se puede usar una aplicacion como postman para hacer los post o mismo curl. El host en este caso es **localhost**
 
   ```sh
-curl --data "secret=123456&migrate=true" localhost/v1/admin/
 # GET para obtener todos los estudiantes
 curl localhost/v1/students/
 # POST para crear un estudiante
@@ -113,7 +109,6 @@ docker container run -it --network=kind alavarello/custom-curl
 ```
 
  ```sh
-curl --data "secret=123456&migrate=true" nginx/v1/admin/
 # GET para obtener todos los estudiantes
 curl nginx/<api-version>/students/
 # POST para crear un estudiante
