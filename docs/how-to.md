@@ -11,7 +11,9 @@ git clone git@github.com:alavarello/tp-redes.git
 ### Pasos a seguir
 
 Todos estos comandos se corren desde la carpeta inicial del repositorio
-**Nota:** Agregar nota de como correr kind ./../
+```sh
+cd tp-redes
+```
 ##### 1) Iniciar el cluster usando kind
 
 Kind levanta nodos en docker. Usando el archivo **cluster.yml** podemos configurar como se estructura el cluster. Hay dos tipos de nodos: masters y workers.
@@ -32,6 +34,11 @@ kubectl create -f dashboard/config.yml
 kubectl -n kubernetes-dashboard describe secret $(kubectl -n kubernetes-dashboard get secret | grep admin-user | awk '{print $1}')
 # Ejecutar en otra terminal o correrlo como un subproceso
 kubectl proxy
+```
+Esperar hasta que todos los pods esten corriendo
+```sh
+# Para fijarse el estado de los pods
+kubectl get pods -n kubernetes-dashboard
 ```
 
 Al correr el ultimo comando entrar [aqui](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login) y pegar el token
@@ -61,7 +68,7 @@ La version alpha de la API se puede encontrar como una imagen de docker `alavare
 ```sh
 # Primero se crean los secretos
 kubectl apply -f deployments/secrets.yml
-# Primero se deployan los servicios
+# Luego se crean los servicios
 kubectl apply -f deployments/services.yml
 # Deployamos nginx
 kubectl apply -f deployments/nginx-alpha.yml
@@ -70,13 +77,9 @@ kubectl apply -f deployments/alpha.yml
 ```
 
  ##### 6) Interactuar con la API
- Hay dos formas de interactuar con la API. Se puede hacer desde un docker dentro de la red o usando localhost en la computadora.
+ Hay dos formas de interactuar con la API. Se puede hacer desde un docker dentro de la red kind o usando localhost en la computadora.
 
- ##### 6.2) Endpoints
-
- En esta instancia **api-version** es **v1**.Cuando se exponga la version beta **api-version** es **v2**
-
-Si la base de datos es nueva, entonces la migramos usando el endpoint de **/admin** migramos. Este comando se deberia correr una vez en la prueba.
+ ##### 6.1) Endpoints
 
  ```sh
 POST <host>/<api-version>/admin/ # Data: secret=123456 y migrate=true
@@ -84,30 +87,38 @@ GET <host>/<api-version>/students/
 POST <host>/students/ # Data: username=agus y email=agus@redes.com
 ```
 
- ##### 6.1) Creamos un host en la red para acceder a las API
+En esta instancia **api-version** es **v1**. Cuando se exponga la version beta **api-version** es **v2**
+
+Si la base de datos es nueva, entonces la migramos usando el endpoint de **/admin**. Este comando se deberia correr una vez en la prueba.
+
+ ##### 6.2) Formas de acceder a la API
+ ###### 6.2.1) Usar loalhost
+
+ En este caso se puede usar una aplicacion como postman para hacer los post o mismo curl. El host en este caso es **localhost**
+ 
+  ```sh
+curl --data "secret=123456&migrate=true" localhost/v1/admin/
+# GET para obtener todos los estudiantes
+curl localhost/v1/students/
+# POST para crear un estudiante
+curl --data "username=agus&email=agus@redes.com" localhost/v1/students/
+```
+
+ ##### 6.2.2) Usar un host en la red kind para acceder a las API
 
 Creamos una contenedor de docker dentro de la red **kind** para poder acceder mediante curl a la API. Este contenedor es efimero, cuando se cierre el programa bash se destruye el contenedor. El contenedor esta basado en una imagen que tiene ubuntu y curl
 
  ```sh
 docker container run -it --network=kind alavarello/custom-curl
 ```
- ###### 6.1.a) Comandos curl
-
-En esta instancia **api-version** es **v1**.Cuando se exponga la version beta **api-version** es **v2**
-
-Si la base de datos es nueva, entonces es necesario aplicar las migraciones usando el endpoint de **/admin**. Este comando se deberia correr una sola vez en la prueba.
 
  ```sh
-curl --data "secret=123456&migrate=true" nginx/<api-version>/admin/
+curl --data "secret=123456&migrate=true" nginx/v1/admin/
 # GET para obtener todos los estudiantes
 curl nginx/<api-version>/students/
 # POST para crear un estudiante
-curl --data "username=agus&email=agus@redes.com" nginx/<api-version>/students/
+curl --data "username=agus&email=agus@redes.com" nginx/v1/students/
 ```
-
- ##### 6.2) Usar loalhost
-
- En este caso se puede usar una aplicacion como postman para hacer los post o mismo curl. Lo que cambia es que el **host** es **localhost**
 
  ##### 7) Subir la version beta de la API
 Para la version beta de la API usamos la imagen de docker `alavarello/test-api:beta` que tiene unos cambios en como representar un estudiante.
@@ -119,6 +130,12 @@ kubectl apply -f deployments/beta-canary.yml
 kubectl delete deployments nginx
 # Cambiamos la configuracion del nginx
 kubectl apply -f deployments/nginx-beta.yml
+```
+En este caso se tiene las dos APIs conviviendo al mismo tiempo
+
+ ##### 7) Sacar la version alpha
+ 
+```sh
 # Subimos la cantidad total de nodos que queremos de la version beta
 kubectl apply -f deployments/beta.yml
 # Borramos el deployment de alpha
