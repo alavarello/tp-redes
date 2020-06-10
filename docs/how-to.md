@@ -25,7 +25,7 @@ kind create cluster --config cluster.yml
 kubectl config get-contexts
 ```
  ##### 2) Levantar el dashboard
-El dashboard sive para administrar y visualizar el cluster de Kubernetes de una mejor manera.
+El dashboard sirve para administrar y visualizar el cluster de Kubernetes de una mejor manera.
 ```sh
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.1/aio/deploy/recommended.yaml
 # Crear permisos
@@ -54,7 +54,7 @@ docker container run --network=kind --name database -e POSTGRES_PASSWORD=123456 
  ##### 4) Levantar un nginx
 
 Levantamos un contenedor que tenga una imagen nginx
-Este  escucha en el puerto 80 y lo rediriga a los nodos.
+Este  escucha en el puerto 80 y lo redirige a los nodos.
 
 ```sh
 docker build -t custom-nginx images/nginx/
@@ -121,7 +121,7 @@ curl --data "username=agus&email=agus@redes.com" nginx/v1/students/
 ```
 
  ##### 7) Subir la version beta de la API
-Para la version beta de la API usamos la imagen de docker `alavarello/test-api:beta` que tiene unos cambios en como representar un estudiante.
+Para la version beta de la API usamos la imagen de docker `alavarello/test-api:beta` que tiene unos cambios en como representar un estudiante (el get en el alpha muestra el nombre mientras que en la beta muestra el email).
 
 ```sh
 # Subimos algunos Pods de la version beta y bajamos la cantidad de Pods de la version alpha
@@ -133,7 +133,7 @@ kubectl apply -f deployments/nginx-beta.yml
 ```
 En este caso se tiene las dos APIs conviviendo al mismo tiempo
 
- ##### 7) Sacar la version alpha
+ ##### 8) Sacar la version alpha
  
 ```sh
 # Subimos la cantidad total de nodos que queremos de la version beta
@@ -142,7 +142,7 @@ kubectl apply -f deployments/beta.yml
 kubectl delete deployments alpha
 ```
 
- #### 6) Otras pruebas
+ ##### 9) Otras pruebas
 
  Algunos comandos extra que se corrieron en las pruebas
 
@@ -157,7 +157,7 @@ kubectl get pods
 kubectl delete pods  <pod> # Replazar <pod> por el nombre del Pod
 ```
 
- #### 8) Para finalizar
+ ##### 10) Para finalizar
 
 Para terminar y eliminar todo lo que se uso en la prueba
 
