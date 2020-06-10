@@ -92,7 +92,7 @@ En esta instancia **api-version** es **v1**. Cuando se exponga la version beta *
 Si la base de datos es nueva, entonces la migramos usando el endpoint de **/admin**. Este comando se deberia correr una vez en la prueba.
 
  ##### 6.2) Formas de acceder a la API
- ###### 6.2.1) Usar loalhost
+ ###### 6.2.1) Usar localhost
 
  En este caso se puede usar una aplicacion como postman para hacer los post o mismo curl. El host en este caso es **localhost**
  
