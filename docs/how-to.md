@@ -70,10 +70,10 @@ La version alpha de la API se puede encontrar como una imagen de docker `alavare
 kubectl apply -f deployments/secrets.yml
 # Luego se crea el servicio de la base de datos
 kubectl apply -f deployments/database.yml
-# Deployamos nginx
-kubectl apply -f deployments/nginx.yml
 # Despues se deploya la version alpha de la API
 kubectl apply -f deployments/alpha.yml
+# Deployamos nginx
+kubectl apply -f deployments/nginx.yml
 ```
 
  ##### 6) Interactuar con la API
